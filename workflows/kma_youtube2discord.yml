@@ -1,0 +1,18 @@
+name: Send a Discord message when new Youtube videos update
+on:
+  youtube:
+    channel_id:
+      - UCI110BywhJpYRC1XY_rSMiQ
+jobs:
+  discord:
+    name: Send a message to discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_KMA }}
+          DISCORD_USERNAME: ${{ secrets.DISCORD_USERNAME_KMA }}
+          DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_KMA }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "`대한민국 기상청 - YouTube`'\n'**${{on.youtube.outputs.title}}**'\n'${{on.youtube.outputs.link}}"
