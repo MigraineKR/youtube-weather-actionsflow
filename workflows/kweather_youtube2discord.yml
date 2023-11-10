@@ -3,6 +3,11 @@ on:
   youtube:
     channel_id:
       - UCbYwQKHsSF0NTdBcpkXPc4w
+    config:
+      filter:
+        title:
+          $not:
+            $regex: "공기측정기|환기청정기"
 jobs:
   discord:
     name: Send a message to discord
@@ -15,4 +20,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_KWEATHER }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`케이웨더 - YouTube`'\n'**${{on.youtube.outputs.title}}**'\n'${{on.youtube.outputs.link}}"
+          args: "`케이웨더 - YouTube`'\n'**${{ on.youtube.outputs.title }}**'\n'${{ on.youtube.outputs.link }}"
