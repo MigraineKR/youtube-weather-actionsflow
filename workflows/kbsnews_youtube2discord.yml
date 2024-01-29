@@ -1,0 +1,29 @@
+name: Send a Discord message when new Youtube videos update
+on:
+  youtube:
+    channel_id:
+      - UCcQTRi69dsVYHN3exePtZ1A
+    config:
+      filter:
+        title:
+          $regex: "[날씨]"
+jobs:
+  discord:
+    name: Send a message to discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare message
+        id: prepare
+        run: |
+          TITLE="${{on.youtube.outputs.title}}"
+          ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\\'/g" | sed 's/\$/\\$/g' | sed 's/`/\\`/g' | sed 's/|/\\|/g' | sed 's/\?/\\?/g' | sed 's/\*/\\*/g' | sed 's/+/\\+/g' | sed 's/(/\\(/g' | sed 's/)/\\)/g' | sed 's/{/\\{/g' | sed 's/}/\\}/g' | sed 's/\[/\\[/g' | sed 's/\]/\\]/g' | sed 's/;/\\;/g' | sed 's/&/\\&/g' | sed 's/\^/\\^/g' | sed 's/%/\\%/g' | sed 's/#/\\#/g' | sed 's/@/\\@/g' | sed 's/!/\\!/g' | sed 's/</\\</g' | sed 's/>/\\>/g' | sed 's/~/\\~/g')
+          echo "Escaped title: $ESCAPED_TITLE"
+          echo "::set-output name=escaped_title::$ESCAPED_TITLE"
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: ${{ secrets.DISCORD_USERNAME_KBS }}
+          DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_KBS }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "`KBS 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}"
