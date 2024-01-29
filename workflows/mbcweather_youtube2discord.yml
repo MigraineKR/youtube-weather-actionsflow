@@ -13,8 +13,7 @@ jobs:
         id: prepare
         run: |
           TITLE="${{on.youtube.outputs.title}}"
-          PUB_DATE="${{on.youtube.outputs.pubDate}}"
-          KST_DATE=$(TZ="Asia/Seoul" date -d "$PUB_DATE" '+%Y년 %m월 %d일 %I:%M:%S %p')
+          echo "Original title: $TITLE"
           ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/＂/g' | sed "s/'/＇/g" | sed 's/\$/＄/g' | sed 's/`/＇/g' | sed 's/|/｜/g' | sed 's/\?/？/g' | sed 's/\*/＊/g' | sed 's/+/＋/g' | sed 's/(/（/g' | sed 's/)/）/g' | sed 's/{/｛/g' | sed 's/}/｝/g' | sed 's/\[/［/g' | sed 's/\]/］/g' | sed 's/;/；/g' | sed 's/&/＆/g' | sed 's/\^/＾/g' | sed 's/%/％/g' | sed 's/#/＃/g' | sed 's/@/＠/g' | sed 's/!/！/g' | sed 's/</＜/g' | sed 's/>/＞/g' | sed 's/~/～/g')
           echo "Escaped title: $ESCAPED_TITLE"
           echo "KST Date: $KST_DATE"
@@ -27,4 +26,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_MBCWEATHER }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`채널A 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}'\n\n'📅 ${{steps.prepare.outputs.kst_date}}"
+          args: "`MBC 뉴스 날씨 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}'\n\n'📅 ${{steps.prepare.outputs.kst_date}}"
