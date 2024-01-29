@@ -6,10 +6,7 @@ on:
     config:
       filter:
         description:
-          $or:
-            - $regex: "#날씨"
-            - $regex: "라이프스타일 예보"
-            - $regex: "대기오염 예보"
+          $regex: "(#날씨|라이프스타일 예보|대기오염 예보)"
 jobs:
   discord:
     name: Send a message to discord
