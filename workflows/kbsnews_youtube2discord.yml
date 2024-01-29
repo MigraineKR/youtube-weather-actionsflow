@@ -26,4 +26,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_KBS }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`KBS 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}"
+          args: "`KBS 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}'\n\n'📅 ${{on.youtube.outputs.pubDate}}"
