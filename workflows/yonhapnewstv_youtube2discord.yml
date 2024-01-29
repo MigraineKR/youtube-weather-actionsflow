@@ -6,7 +6,7 @@ on:
     config:
       filter:
         title:
-          $regex: "[날씨]"
+          $regex: "\[날씨\]"
 jobs:
   discord:
     name: Send a message to discord
