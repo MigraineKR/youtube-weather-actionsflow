@@ -26,4 +26,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_SBS }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`SBS 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}"
+          args: "`SBS 뉴스 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}'\n\n'📅 ${{steps.prepare.outputs.kst_date}}"
