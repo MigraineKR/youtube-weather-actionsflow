@@ -16,8 +16,7 @@ jobs:
         id: prepare
         run: |
           TITLE="${{on.youtube.outputs.title}}"
-          echo "Original title: $TITLE"
-          ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\\'/g" | sed 's/\$/\\$/g' | sed 's/`/\\`/g' | sed 's/|/\\|/g' | sed 's/\?/\\?/g' | sed 's/\*/\\*/g' | sed 's/+/\\+/g' | sed 's/(/\\(/g' | sed 's/)/\\)/g' | sed 's/{/\\{/g' | sed 's/}/\\}/g' | sed 's/\[/\\[/g' | sed 's/\]/\\]/g' | sed 's/;/\\;/g' | sed 's/&/\\&/g' | sed 's/\^/\\^/g' | sed 's/%/\\%/g' | sed 's/#/\\#/g' | sed 's/@/\\@/g' | sed 's/!/\\!/g' | sed 's/</\\</g' | sed 's/>/\\>/g' | sed 's/~/\\~/g')
+          ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/＂/g' | sed "s/'/＇/g" | sed 's/\$/＄/g' | sed 's/`/＇/g' | sed 's/|/｜/g' | sed 's/\?/？/g' | sed 's/\*/＊/g' | sed 's/+/＋/g' | sed 's/(/（/g' | sed 's/)/）/g' | sed 's/{/｛/g' | sed 's/}/｝/g' | sed 's/\[/［/g' | sed 's/\]/］/g' | sed 's/;/；/g' | sed 's/&/＆/g' | sed 's/\^/＾/g' | sed 's/%/％/g' | sed 's/#/＃/g' | sed 's/@/＠/g' | sed 's/!/！/g' | sed 's/</＜/g' | sed 's/>/＞/g' | sed 's/~/～/g')
           echo "Escaped title: $ESCAPED_TITLE"
           echo "::set-output name=escaped_title::$ESCAPED_TITLE"
       - name: Discord notification
