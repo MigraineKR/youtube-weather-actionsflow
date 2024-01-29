@@ -5,14 +5,23 @@ on:
       - UCbYwQKHsSF0NTdBcpkXPc4w
     config:
       filter:
-        title:
-          $not:
-            $regex: "공기측정기|환기청정기"
+        description:
+          $or:
+            - $regex: "#날씨"
+            - $regex: "라이프스타일 예보"
+            - $regex: "대기오염 예보"
 jobs:
   discord:
     name: Send a message to discord
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare message
+        id: prepare
+        run: |
+          TITLE="${{on.youtube.outputs.title}}"
+          ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed "s/'/\\\'/g" | sed 's/\$/\\$/g' | sed 's/`/\\`/g' | sed 's/|/\\|/g' | sed 's/\?/\\?/g' | sed 's/\*/\\*/g' | sed 's/+/\\+/g' | sed 's/(/\\(/g' | sed 's/)/\\)/g' | sed 's/{/\\{/g' | sed 's/}/\\}/g' | sed 's/\[/\\[/g' | sed 's/\]/\\]/g' | sed 's/;/\\;/g' | sed 's/&/\\&/g' | sed 's/\^/\\^/g' | sed 's/%/\\%/g' | sed 's/#/\\#/g' | sed 's/@/\\@/g' | sed 's/!/\\!/g' | sed 's/</\\</g' | sed 's/>/\\>/g' | sed 's/~/\\~/g')
+          echo "Escaped title: $ESCAPED_TITLE"
+          echo "::set-output name=escaped_title::$ESCAPED_TITLE"
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_KWEATHER }}
@@ -20,4 +29,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_KWEATHER }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`케이웨더 - YouTube`'\n'**${{ on.youtube.outputs.title }}**'\n'${{ on.youtube.outputs.link }}"
+          args: "`케이웨더 - YouTube`'\n'**${{steps.prepare.outputs.escaped_title}}**'\n'${{on.youtube.outputs.link}}"
