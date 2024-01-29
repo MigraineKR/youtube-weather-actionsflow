@@ -16,9 +16,13 @@ jobs:
         id: prepare
         run: |
           TITLE="${{on.youtube.outputs.title}}"
+          PUB_DATE="${{on.youtube.outputs.pubDate}}"
+          KST_DATE=$(TZ="Asia/Seoul" date -d "$PUB_DATE" '+%Y년 %m월 %d일 %I:%M:%S %p')
           ESCAPED_TITLE=$(echo "$TITLE" | sed 's/\\/\\\\/g' | sed 's/"/＂/g' | sed "s/'/＇/g" | sed 's/\$/＄/g' | sed 's/`/＇/g' | sed 's/|/｜/g' | sed 's/\?/？/g' | sed 's/\*/＊/g' | sed 's/+/＋/g' | sed 's/(/（/g' | sed 's/)/）/g' | sed 's/{/｛/g' | sed 's/}/｝/g' | sed 's/\[/［/g' | sed 's/\]/］/g' | sed 's/;/；/g' | sed 's/&/＆/g' | sed 's/\^/＾/g' | sed 's/%/％/g' | sed 's/#/＃/g' | sed 's/@/＠/g' | sed 's/!/！/g' | sed 's/</＜/g' | sed 's/>/＞/g' | sed 's/~/～/g')
           echo "Escaped title: $ESCAPED_TITLE"
+          echo "KST Date: $KST_DATE"
           echo "::set-output name=escaped_title::$ESCAPED_TITLE"
+          echo "::set-output name=kst_date::$KST_DATE"
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
