@@ -23,7 +23,7 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    name: Run
+    name: Run Actionsflow
     concurrency: actionsflow
     steps:
       - uses: actions/checkout@v4
@@ -40,4 +40,7 @@ jobs:
       - name: Setup act
         uses: actionsflow/setup-act-for-actionsflow@v1
       - name: Run act
-        run: act --workflows ./dist/workflows --secret-file ./dist/.secrets --eventpath ./dist/event.json --env-file ./dist/.env -P ubuntu-latest=actionsflow/act-environment:v1 -P ubuntu-18.04=actionsflow/act-environment:v1
+        run: |
+          TIMESTAMP=$(date +%s)
+          CONTAINER_NAME="act-${TIMESTAMP}"
+          act --workflows ./dist/workflows --secret-file ./dist/.secrets --eventpath ./dist/event.json --env-file ./dist/.env -P ubuntu-latest=actionsflow/act-environment:v1 --container-name "${CONTAINER_NAME}"
